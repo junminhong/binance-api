@@ -1,0 +1,59 @@
+basePath: /api/v1
+definitions:
+  http.aggTradeData:
+    properties:
+      data:
+        $ref: '#/definitions/http.data'
+      stream:
+        type: string
+    type: object
+  http.data:
+    properties:
+      E:
+        type: integer
+      M:
+        type: boolean
+      T:
+        type: integer
+      a:
+        type: integer
+      e:
+        type: string
+      f:
+        type: integer
+      l:
+        type: integer
+      m:
+        type: boolean
+      p:
+        type: string
+      q:
+        type: string
+      s:
+        type: string
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact:
+    email: junminhong1110@gmail.com
+    name: junmin.hong
+    url: https://github.com/junminhong
+  description: 好用的東西
+  license:
+    name: MIT
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Binance API
+  version: "1.0"
+paths:
+  /trade:
+    get:
+      responses:
+        "200":
+          description: 取得成功
+          schema:
+            $ref: '#/definitions/http.aggTradeData'
+      summary: 取得最新的Trade資料
+      tags:
+      - trade
+swagger: "2.0"

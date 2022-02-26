@@ -1,0 +1,89 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "好用的東西",
+        "title": "Binance API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "junmin.hong",
+            "url": "https://github.com/junminhong",
+            "email": "junminhong1110@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/trade": {
+            "get": {
+                "tags": [
+                    "trade"
+                ],
+                "summary": "取得最新的Trade資料",
+                "responses": {
+                    "200": {
+                        "description": "取得成功",
+                        "schema": {
+                            "$ref": "#/definitions/http.aggTradeData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "http.aggTradeData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/http.data"
+                },
+                "stream": {
+                    "type": "string"
+                }
+            }
+        },
+        "http.data": {
+            "type": "object",
+            "properties": {
+                "E": {
+                    "type": "integer"
+                },
+                "M": {
+                    "type": "boolean"
+                },
+                "T": {
+                    "type": "integer"
+                },
+                "a": {
+                    "type": "integer"
+                },
+                "e": {
+                    "type": "string"
+                },
+                "f": {
+                    "type": "integer"
+                },
+                "l": {
+                    "type": "integer"
+                },
+                "m": {
+                    "type": "boolean"
+                },
+                "p": {
+                    "type": "string"
+                },
+                "q": {
+                    "type": "string"
+                },
+                "s": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+APP:
+  DB_HOST: binance-postgres
+  DB_DATABASE: binance-db
+  DB_USERNAME: username
+  DB_PASSWORD: password
+  DB_PORT: 5432
+  REDIS_HOST: binance-redis
+  REDIS_PORT: 6379
+  REDIS_PASSWORD: password
+  GIN_MODE: "release"
+  PORT: 8080
+  HOST: 127.0.0.1
+  SAVE_PG: false
+  SAVE_PG_MAX: 100

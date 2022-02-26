@@ -1,0 +1,55 @@
+version: "3.7"
+services:
+  binance-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "8080:8080"
+    container_name: binance-service
+    environment:
+      - APP.DB_HOST=binance-postgres
+      - APP.DB_DATABASE=binance-db
+      - APP.DB_USERNAME=username
+      - APP.DB_PASSWORD=password
+    depends_on:
+      - binance-postgres
+      - binance-redis
+    entrypoint: go run /app/cmd/main.go
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  binance-postgres:
+    image: postgres:12.4-alpine
+    ports:
+      - "5432:5432"
+    container_name: binance-postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=binance-db
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  binance-redis:
+    image: redis:6.2.6-alpine
+    ports:
+    - "6379:6379"
+    restart: always
+    container_name: binance-redis
+    command: redis-server --requirepass password
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
