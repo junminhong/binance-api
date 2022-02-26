@@ -29,14 +29,15 @@ var addr = flag.String("addr", "stream.yshyqxx.com", "http service address")
 func setUpRedis() *redis.Client {
 	client := redis.NewClient(&redis.Options{
 		Addr:     viper.GetString("APP.REDIS_HOST") + ":" + viper.GetString("APP.REDIS_PORT"),
-		Password: viper.GetString("APP.REDIS_PASSWORD"), // no password set
-		DB:       0,                                     // use default DB
+		Password: viper.GetString("APP.REDIS_PASSWORD"),
+		DB:       0,
 	})
 	return client
 }
 
 func setUpRouter() *gin.Engine {
 	router := gin.Default()
+	router.Use(middleware.Middleware())
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
 		ginSwagger.DefaultModelsExpandDepth(-1)))
 	return router
@@ -82,11 +83,11 @@ func setUpWebSocket() *websocket.Conn {
 }
 
 func setUpDomain(router *gin.Engine, db *gorm.DB, redis *redis.Client, c *websocket.Conn) {
-	watcherHandler := watcher.NewHandler(c, db, redis)
-	go watcherHandler.WatchTradeData()
 	tradeRepo := repo.NewTradeRepo(db, redis)
 	tradeApp := application.NewTradeApp(tradeRepo)
 	http.NewHandler(router, tradeApp)
+	watcherHandler := watcher.NewHandler(c, db, redis)
+	go watcherHandler.WatchTradeData()
 }
 
 func init() {
@@ -121,11 +122,10 @@ func init() {
 // @BasePath  /api/v1
 func main() {
 	c := setUpWebSocket()
-	router := setUpRouter()
-	router.Use(middleware.Middleware())
 	db := setUpDB()
 	go db.migrationDB()
 	redis := setUpRedis()
+	router := setUpRouter()
 	setUpDomain(router, db.db, redis, c)
 	router.Run(viper.GetString("HOST") + ":" + viper.GetString("APP.PORT"))
 }

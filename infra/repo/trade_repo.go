@@ -13,7 +13,6 @@ type tradeRepo struct {
 }
 
 func (tradeRepo *tradeRepo) GetLastTradeData() string {
-	//TODO implement me
 	return tradeRepo.redis.Get(context.Background(), "streams=btcusdt@aggTrade").Val()
 }
 
